@@ -1,7 +1,17 @@
-import { getHeadBlockNumber } from "./util/api.js";
+import debug from 'debug';
+import dotenv from 'dotenv';
+import { getHeadBlockNumber } from './util/api.js';
+import moment from 'moment-timezone';
+import { writeJson } from './util/file.js';
+dotenv.config();
+
+const log = debug('app:log');
+const err = debug('app:err');
+
+const FILE_PATH_BLOCK = process.env.FILE_PATH_BLOCK || './data/block.json';
 
 async function init() {
-  // TODO : 파일에 기록된 시작 블록 위치를 읽어 들인다.
+  // DONE : 파일에 기록된 시작 블록 위치를 읽어 들인다.
   // TODO :   L 파일이 존재하지 않으면 최근 블록부터 시작한다
   // TODO : Loop
   // TODO :   L 최근 블록 정보를 읽어들인다
@@ -18,6 +28,16 @@ async function init() {
   // TODO :   __ L (별도 쉘 프로그램) 최근 작업시간이 5분이상 차이나면 메일을 통해 오류 상황을 알려주도록 해야 된다.
 
   let headBlockNumber = await getHeadBlockNumber();
-  console.log(headBlockNumber);
+  log(headBlockNumber);
+  err(123);
+
+  const utc = moment().tz('Asia/Seoul');
+  writeJson(FILE_PATH_BLOCK, {
+    currentBlockNumber: 0,
+    headBlockNumber,
+    timestamp: new Date().getTime(),
+    utc,
+    timekr: utc.format('YYYY-MM-DD HH:mm:ss'),
+  });
 }
 init();
