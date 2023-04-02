@@ -1,11 +1,12 @@
-import axios from 'axios';
-import debug from 'debug';
+import axios from "axios";
+import debug from "debug";
 
-const API_URL = process.env.API_URL || 'https://api.steemit.com';
-const MAX_RETRY = parseInt(process.env.MAX_RETRY || '5');
+const API_URL = process.env.API_URL || "https://api.steemit.com";
+const MAX_RETRY = parseInt(process.env.MAX_RETRY || "5");
 
-const log = debug('app:log:rpc20');
-const err = debug('app:err:rpc20');
+const trace = debug("app:trace:rpc20");
+const log = debug("app:log:rpc20");
+const err = debug("app:err:rpc20");
 
 /**
  * rpc20 호출을 위한 json 생성
@@ -14,8 +15,8 @@ const err = debug('app:err:rpc20');
  * @param {number} id // default: 1
  * @returns
  */
-export function rpc20(method = '', params = [], id = 1) {
-  return { jsonrpc: '2.0', method, params, id };
+export function rpc20(method = "", params = [], id = 1) {
+  return { jsonrpc: "2.0", method, params, id };
 }
 
 /**
@@ -29,7 +30,7 @@ export function call(method, params, retry = 0) {
   try {
     const data = rpc20(method, params);
     let res = axios.post(API_URL, data);
-    log(API_URL, data);
+    trace(API_URL, data);
     return res;
   } catch (e) {
     if (retry >= MAX_RETRY) {

@@ -2,6 +2,18 @@
 
 > 스팀 블록체인 모니터링 템플릿 프로그램
 
+## 시작하기
+
+### 프로젝트 복제하기
+
+```sh
+npx degit https://github.com/wonsama/smon smon
+cd smon
+npm install
+```
+
+이후 `exsamples` 폴더의 예시를 참조하여 프로젝트를 구성한다.
+
 ## 참조링크
 
 - [github-steemv2](https://github.com/wonsama/steemv2/blob/main/util/monitors/core/core_steem.js)

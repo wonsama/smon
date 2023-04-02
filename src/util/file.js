@@ -1,9 +1,20 @@
-import debug from 'debug';
-import fs from 'fs';
-const DEFAULT_ENCODING = 'utf8';
+import debug from "debug";
+import fs from "fs";
+const DEFAULT_ENCODING = "utf8";
 
-const log = debug('app:log:file');
-const err = debug('app:err:file');
+const trace = debug("app:trace:file");
+const log = debug("app:log:file");
+const info = debug("app:info:file");
+const err = debug("app:err:file");
+
+/**
+ * 해당 경로에 파일이 존재하는지 확인한다.
+ * @param {string} path 파일 경로
+ * @returns {boolean} 파일 존재 여부
+ */
+export function exist(path) {
+  return fs.existsSync(path);
+}
 
 /**
  * 파일에서 JSON을 읽어온다.
@@ -11,7 +22,7 @@ const err = debug('app:err:file');
  * @param {JSON} defaults  기본 json 값 // default: {}
  * @returns {JSON} 파일에서 읽어 온 parse된 json
  */
-export function readJson(path, defaults = {}) {
+export function readJson(path, defaults = undefined) {
   if (fs.existsSync(path)) {
     try {
       return JSON.parse(fs.readFileSync(path, DEFAULT_ENCODING));
@@ -20,7 +31,7 @@ export function readJson(path, defaults = {}) {
       return defaults;
     }
   } else {
-    err(`${path} not found`, e);
+    err(`${path} not exist`);
     return defaults;
   }
 }
@@ -32,8 +43,12 @@ export function readJson(path, defaults = {}) {
  */
 export function writeJson(path, json) {
   try {
+    if (fs.existsSync(path)) {
+      trace(`file updated : ${path}`);
+    } else {
+      info(`file created : ${path}`);
+    }
     fs.writeFileSync(path, JSON.stringify(json, null, 2), DEFAULT_ENCODING);
-    log(`file created : ${path}`);
   } catch (e) {
     err(`occured error : ${path}`, e);
   }

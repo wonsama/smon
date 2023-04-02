@@ -106,3 +106,6 @@ dist
 # wonsama added
 .DS_Store
 package-lock.json
+data/**/*.json
+data/block.json
+test.js
