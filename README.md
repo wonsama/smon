@@ -14,6 +14,11 @@ npm install
 
 이후 `exsamples` 폴더의 예시를 참조하여 프로젝트를 구성한다.
 
+## TODO
+
+DockerFile 를 사용하여 빌드
+docker-compose 를 사용하여 실행 ( app.js 를 사용자가 구현하여 entry point 로 사용 하도록 유도 )
+
 ## 참조링크
 
 - [github-steemv2](https://github.com/wonsama/steemv2/blob/main/util/monitors/core/core_steem.js)

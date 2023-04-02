@@ -109,3 +109,4 @@ package-lock.json
 data/**/*.json
 data/block.json
 test.js
+src/app.js
