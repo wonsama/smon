@@ -1,20 +1,18 @@
-import axios from "axios";
-import debug from "debug";
-import dotenv from "dotenv";
+import axios from 'axios';
+import debug from 'debug';
+import dotenv from 'dotenv';
 dotenv.config();
 
-const API_URL = process.env.API_URL || "https://api.steemit.com";
-const MAX_RETRY = parseInt(process.env.MAX_RETRY || "5");
-const TIME_SLEEP = parseInt(process.env.TIME_SLEEP || "3000");
+const STEEM_API_URL = process.env.STEEM_API_URL || 'https://api.steemit.com';
+const MAX_RETRY = parseInt(process.env.MAX_RETRY || '5');
+const TIME_SLEEP = parseInt(process.env.TIME_SLEEP || '3000');
 
-console.log("process.env.MAX_RETRY", process.env.MAX_RETRY);
-
-const trace = debug("app:trace:rpc20");
-const log = debug("app:log:rpc20");
-const err = debug("app:err:rpc20");
+const trace = debug('app:trace:rpc20');
+const log = debug('app:log:rpc20');
+const err = debug('app:err:rpc20');
 
 // 기본 timeout 설정 1000 = 1 sec
-axios.defaults.timeout = parseInt(process.env.TIMEOUT_MIL || "10000");
+axios.defaults.timeout = parseInt(process.env.TIMEOUT_MIL || '10000');
 
 /**
  * rpc20 호출을 위한 json 생성
@@ -23,8 +21,8 @@ axios.defaults.timeout = parseInt(process.env.TIMEOUT_MIL || "10000");
  * @param {number} id // default: 1
  * @returns
  */
-export function rpc20(method = "", params = [], id = 1) {
-  return { jsonrpc: "2.0", method, params, id };
+export function rpc20(method = '', params = [], id = 1) {
+  return { jsonrpc: '2.0', method, params, id };
 }
 
 /**
@@ -37,8 +35,8 @@ export function rpc20(method = "", params = [], id = 1) {
 export async function call(method, params, retry = 0) {
   try {
     const data = rpc20(method, params);
-    let res = await axios.post(API_URL, data);
-    trace(API_URL, data);
+    let res = await axios.post(STEEM_API_URL, data);
+    trace(STEEM_API_URL, data);
     return res;
   } catch (e) {
     if (retry >= MAX_RETRY) {

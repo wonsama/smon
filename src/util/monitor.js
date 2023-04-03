@@ -1,26 +1,26 @@
-import { exist, readJson, writeJson } from "./file.js";
-import { getBlock, getHeadBlockNumber } from "./api.js";
+import { exist, readJson, writeJson } from './file.js';
+import { getBlock, getHeadBlockNumber } from './api.js';
 
-import debug from "debug";
-import dotenv from "dotenv";
-import moment from "moment-timezone";
+import debug from 'debug';
+import dotenv from 'dotenv';
+import moment from 'moment-timezone';
 
 dotenv.config();
 
-const trace = debug("app:trace:monitor");
-const log = debug("app:log:monitor");
-const info = debug("app:info:monitor");
-const err = debug("app:err:monitor");
+const trace = debug('app:trace:monitor');
+const log = debug('app:log:monitor');
+const info = debug('app:info:monitor');
+const err = debug('app:err:monitor');
 
-const READ_BLOCK_SIZE = parseInt(process.env.READ_BLOCK_SIZE || "100");
+const READ_BLOCK_SIZE = parseInt(process.env.READ_BLOCK_SIZE || '100');
 
-const TIME_ZONE = process.env.TIME_ZONE || "Asia/Seoul";
-const TIME_FORMAT = process.env.TIME_FORMAT || "YYYY-MM-DD HH:mm:ss";
-const TIME_SLEEP = parseInt(process.env.TIME_SLEEP || "3000");
-const TIME_CHECK = parseInt(process.env.TIME_CHECK || "100");
-const FILE_PATH_BLOCK = process.env.FILE_PATH_BLOCK || "./data/block.json";
-const FILE_PATH_BLOCKS = process.env.FILE_PATH_BLOCKS || "./data/blocks";
-const FILE_WRITE_BLOCK_YN = process.env.FILE_WRITE_BLOCK_YN || "N";
+const TIME_ZONE = process.env.TIME_ZONE || 'Asia/Seoul';
+const TIME_FORMAT = process.env.TIME_FORMAT || 'YYYY-MM-DD HH:mm:ss';
+const TIME_SLEEP = parseInt(process.env.TIME_SLEEP || '3000');
+const TIME_CHECK = parseInt(process.env.TIME_CHECK || '100');
+const FILE_PATH_BLOCK = process.env.FILE_PATH_BLOCK || './data/block.json';
+const FILE_PATH_BLOCKS = process.env.FILE_PATH_BLOCKS || './data/blocks';
+const FILE_WRITE_BLOCK_YN = process.env.FILE_WRITE_BLOCK_YN || 'N';
 
 /**
  * 모니터링을 수행한다
@@ -89,7 +89,7 @@ export default class Monitor {
     }
     if (!this.#isRunning) {
       // 시작
-      log("started");
+      log('started');
       this.#isRunning = true;
 
       // 반복 작업을 수행한다
@@ -112,7 +112,7 @@ export default class Monitor {
         log(
           `headBlockNumber : ${headBlockNumber}, startBlock : ${startBlock}, endBlock : ${endBlock}, count : ${
             endBlock - startBlock + 1
-          }`
+          }`,
         );
 
         // 블록 정보를 읽어들인다
@@ -122,7 +122,7 @@ export default class Monitor {
         }
         await Promise.all(blockList).then((res) => {
           // 블록 정보를 파일에 저장한다 - Y로 설정한 경우에만
-          if (FILE_WRITE_BLOCK_YN.toUpperCase() === "Y") {
+          if (FILE_WRITE_BLOCK_YN.toUpperCase() === 'Y') {
             for (let i = 0; i < res.length; i++) {
               writeJson(`${FILE_PATH_BLOCKS}/${res[i].block_id}.json`, res[i]);
             }
@@ -162,6 +162,9 @@ export default class Monitor {
     let opList = [];
     for (let i = 0; i < res.length; i++) {
       let block = res[i];
+      if (!block.block_id) {
+        continue;
+      }
       let block_id = block.block_id;
       let timestamp = block.timestamp;
 
@@ -204,7 +207,7 @@ export default class Monitor {
    * 모니터링을 중지한다
    */
   async stop() {
-    log("stopped");
+    log('stopped');
     this.#isRunning = false;
     while (!this.#isRunning) {
       await new Promise((resolve) => setTimeout(resolve, TIME_SLEEP));
@@ -215,7 +218,7 @@ export default class Monitor {
    * 모니터링을 종료한다
    */
   exit() {
-    info("exited");
+    info('exited');
     process.exit(0);
   }
 
