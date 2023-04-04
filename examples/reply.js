@@ -1,9 +1,18 @@
-import { reply } from "../src/util/steemapi.js";
+// src/util/reply.js
+//
+// 예시) 스팀잇 댓글 봇
+// 댓글을 생성 해준다
 
-reply("wonsama", "gptbot", "gptbot", "test")
+import debug from 'debug';
+import { reply } from '../src/util/steemapi.js';
+
+const log = debug('app:log');
+const err = debug('app:err');
+
+reply('wonsama', 'gptbot', 'gptbot', 'test')
   .then((result) => {
-    console.log("result", result);
+    log('result', result);
   })
   .catch((error) => {
-    console.log("error", error);
+    log('error', error);
   });

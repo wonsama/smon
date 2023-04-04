@@ -1,5 +1,10 @@
+// src/util/monitor.js
+//
+// steem blockchain 을 모니터링 하기 위한 모듈
+// 심플하게 특정 operation 을 모니터링 하기 위해 만들었다.
+
 import { exist, readJson, writeJson } from './file.js';
-import { getBlock, getHeadBlockNumber } from './api.js';
+import { getBlock, getHeadBlockNumber } from './rpc20.js';
 
 import debug from 'debug';
 import dotenv from 'dotenv';
@@ -162,7 +167,8 @@ export default class Monitor {
     let opList = [];
     for (let i = 0; i < res.length; i++) {
       let block = res[i];
-      if (!block.block_id) {
+      if (!block || !block.block_id) {
+        // 정상적으로 작업이 처리 되지 않은 경우임
         continue;
       }
       let block_id = block.block_id;

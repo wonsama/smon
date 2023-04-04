@@ -1,11 +1,15 @@
-import debug from "debug";
-import fs from "fs";
-const DEFAULT_ENCODING = "utf8";
+// src/util/file.js
+//
+// 파일 관련 유틸리티
 
-const trace = debug("app:trace:file");
-const log = debug("app:log:file");
-const info = debug("app:info:file");
-const err = debug("app:err:file");
+import debug from 'debug';
+import fs from 'fs';
+const DEFAULT_ENCODING = 'utf8';
+
+const trace = debug('app:trace:file');
+const log = debug('app:log:file');
+const info = debug('app:info:file');
+const err = debug('app:err:file');
 
 /**
  * 해당 경로에 파일이 존재하는지 확인한다.

@@ -1,3 +1,8 @@
+// src/util/openai.js
+//
+// open ai 사의 chat gpt 를 사용하기 위함.
+// 비용 절감을 위해 gpt-3.5-turbo 모델을 사용한다.
+
 import { Configuration, OpenAIApi } from 'openai';
 
 import dotenv from 'dotenv';
@@ -9,14 +14,14 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-export default async function (prompt, prefix = [], suffix = []) {
+export default async function (prompts) {
   let messages = [];
-  messages.push(...prefix); // { role: 'user', content: '아래 결과를 한국어로 요약해줘' }
-  messages.push({ role: 'user', content: prompt });
-  messages.push(...suffix);
+  // { role: 'user', content: 'summarize the sentence below' }
+  // { role: 'user', content: '아래 결과를 한국어로 요약해줘' }
+  messages.push(...prompts);
 
   const response = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo', // 사용할 모델
+    model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo', // 사용할 모델
     messages: messages, // 채팅의 이전 메시지
     max_tokens: 1000, // 생성할 토큰의 개수
     temperature: 0.7, // 0.0 ~ 1.0

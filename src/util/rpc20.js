@@ -1,3 +1,8 @@
+// src/util/rpc20.js
+//
+// rpc20 호출을 위한 함수들을 정의한다
+// steemapi 가 존재하기는 하지만 모니터링시에는 좀더 디테일하게 조작하기위해 별도 모듈을 만들었다
+
 import axios from 'axios';
 import debug from 'debug';
 import dotenv from 'dotenv';
@@ -50,4 +55,23 @@ export async function call(method, params, retry = 0) {
       return call(method, params, retry + 1);
     }
   }
+}
+
+/**
+ * 현재 블록 번호를 가져온다
+ * @returns {number} 현재 블록 번호
+ */
+export async function getHeadBlockNumber() {
+  let res = await call('condenser_api.get_dynamic_global_properties');
+  return res.data.result.head_block_number;
+}
+
+/**
+ * 대상 블록 정보를 가져온다
+ * @param {number} blockNumber
+ * @returns 블록 정보
+ */
+export async function getBlock(blockNumber) {
+  let res = await call('condenser_api.get_block', [blockNumber]);
+  return res.data.result;
 }
