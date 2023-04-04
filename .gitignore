@@ -110,3 +110,4 @@ data/**/*.json
 data/block.json
 test*.js
 app.js
+.key

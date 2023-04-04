@@ -5,6 +5,7 @@
 import Monitor from '../src/util/monitor.js';
 import cleanup from '../src/util/cleanup.js';
 import debug from 'debug';
+
 // import dsteem from '@upvu/dsteem';
 
 const log = debug('app:log:monitor');
@@ -30,7 +31,7 @@ mon.add('comment', function (payload) {
   } else {
     // reply
     jobs.push(['reply', payload.data]);
-    log('=====> reply added', jobs.length, 'reply', payload.data.body);
+    info('=====> reply added', jobs.length, 'reply', payload.data.body);
   }
 });
 mon.add('transfer', function (payload) {
@@ -53,7 +54,7 @@ while (!PROGRAM_IS_EXIT) {
     let command = job[0];
     let payload = job[1];
     if (command == 'reply') {
-      log('<===== jobs removed', jobs.length, command, payload.parent_permlink);
+      info('<===== jobs removed', jobs.length, command, payload.parent_permlink);
     }
   }
   await new Promise((resolve) => setTimeout(resolve, TIME_SLEEP));
