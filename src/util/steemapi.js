@@ -62,6 +62,60 @@ export function removeCodeBlock(source) {
   return result;
 }
 
+export function removeImageToBlank(source) {
+  let result = source;
+  let start = 0;
+  let end = 0;
+  while (true) {
+    start = result.indexOf('![', start);
+    if (start == -1) {
+      break;
+    }
+    end = result.indexOf(')', start + 2);
+    if (end == -1) {
+      break;
+    }
+    result = result.substring(0, start) + result.substring(end + 1);
+  }
+  return result;
+}
+
+export function removeLinkToBlank1(source) {
+  let result = source;
+  let start = 0;
+  let end = 0;
+  while (true) {
+    start = result.indexOf('[', start);
+    if (start == -1) {
+      break;
+    }
+    end = result.indexOf(')', start + 1);
+    if (end == -1) {
+      break;
+    }
+    result = result.substring(0, start) + result.substring(end + 1);
+  }
+  return result;
+}
+
+export function removeLinkToBlank2(source) {
+  let result = source;
+  let start = 0;
+  let end = 0;
+  while (true) {
+    start = result.indexOf('https://', start);
+    if (start == -1) {
+      break;
+    }
+    end = result.indexOf(' ', start + 8);
+    if (end == -1) {
+      break;
+    }
+    result = result.substring(0, start) + result.substring(end + 1);
+  }
+  return result;
+}
+
 /**
  * 댓글을 남긴다
  * @param {string} parent_author - 부모 글의 작성자

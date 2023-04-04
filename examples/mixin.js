@@ -2,7 +2,13 @@
 //
 // 예시) 번역, 요약 등의 기능을 모아서 사용한다.
 
-import { getContent, removeCodeBlock } from '../src/util/steemapi.js';
+import {
+  getContent,
+  removeCodeBlock,
+  removeImageToBlank,
+  removeLinkToBlank1,
+  removeLinkToBlank2,
+} from '../src/util/steemapi.js';
 
 import debug from 'debug';
 import dotenv from 'dotenv';
@@ -27,14 +33,18 @@ async function init() {
   // 요약 글 정보 가져오기
   info(`get content - author : ${author}, permlink : ${permlink}`);
   let cont = await getContent(author, permlink);
-  let rcode = removeCodeBlock(cont.body);
-  let ori = removeMd(rcode).replace(/(\r\n|\n|\r)/gm, '');
-  log(ori);
+  cont = removeCodeBlock(cont.body);
+  cont = removeImageToBlank(cont);
+  cont = removeLinkToBlank1(cont);
+  cont = removeLinkToBlank2(cont);
+  cont = removeMd(cont).replace(/(\r\n|\n|\r)/gm, '');
+  log(cont);
+
   info('====================================');
 
   // 영문 변환
   info(`translate -> en`);
-  let eng = await translate(ori, 'en', TRANSLATE_PARENT);
+  let eng = await translate(cont, 'en', TRANSLATE_PARENT);
   log(eng);
   info('====================================');
 

@@ -3,6 +3,8 @@
   "scripts": {
     "demow": "set DEBUG=app:log:*,app:info:*,app:err:* & node ./examples/monitor.js",
     "demom": "export DEBUG=app:log:*,app:info:*,app:err:*;node ./examples/monitor.js",
+    "mixw": "set DEBUG=app:log:*,app:info:*,app:err:* & node ./examples/mixin.js",
+    "mixm": "export DEBUG=app:log:*,app:info:*,app:err:*;node ./examples/mixin.js",
     "testw": "set DEBUG=app:log:*,app:info:*,app:err:* & node ./test.js",
     "testm": "export DEBUG=app:log:*,app:info:*,app:err:*;node ./test.js"
   },
